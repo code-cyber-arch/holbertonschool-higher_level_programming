@@ -5,7 +5,7 @@ def roman_to_int(roman_string):
     if roman_string is None:
         return 0
     for i in roman_string:
-        if i not in roman:
+        if i not in roman.keys():
             return 0
     return_num = roman[roman_string[-1]]
     for i in range(len(roman_string) - 2, -1, -1):
