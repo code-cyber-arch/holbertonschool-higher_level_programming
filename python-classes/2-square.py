@@ -6,9 +6,8 @@ class Square:
     """Represent a square."""
     def __init__(self, size=0) -> None:
         try:
-            int(size)
+            self.__size = int(size)
             if size < 0:
                 raise ValueError("size must be >= 0")
-            self.__size = size
         except TypeError:
-            print('size must be an integer')
+            raise TypeError('size must be an integer')
