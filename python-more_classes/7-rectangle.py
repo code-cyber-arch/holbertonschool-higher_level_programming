@@ -50,7 +50,7 @@ class Rectangle:
             return ""
         pattern = []
         for _ in range(self.__height):
-            pattern.append(str(Rectangle.print_symbol)*self.width)
+            pattern.append(str(self.print_symbol)*self.width)
         return "\n".join(pattern)
 
     def __repr__(self):
