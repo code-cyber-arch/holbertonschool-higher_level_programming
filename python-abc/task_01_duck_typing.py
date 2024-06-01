@@ -35,7 +35,8 @@ class Circle(Shape):
         Args:
             radius (float): The radius of the circle.
         """
-        self.__radius = radius
+        if radius >= 0:
+            self.__radius = radius
 
     def area(self):
         """Calculate the area of the circle.
