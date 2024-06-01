@@ -1,3 +1,16 @@
+
+=============================
+How to Use 7-base_geometry.py
+=============================
+
+This modules defines a base geometry class BaseGeometry.
+
+Instantiation
+=============
+
+``BaseGeometry`` includes no attributes, and accordingly is initialized 
+with no arguments.
+
 ::
 
     >>> BaseGeometry = __import__('7-base_geometry').BaseGeometry
