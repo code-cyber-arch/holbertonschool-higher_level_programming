@@ -35,8 +35,7 @@ class Circle(Shape):
         Args:
             radius (float): The radius of the circle.
         """
-        if radius >= 0:
-            self.__radius = radius
+        self.__radius = radius
 
     def area(self):
         """Calculate the area of the circle.
@@ -93,3 +92,11 @@ def shape_info(shape):
     """
     print(f"Area: {shape.area()}")
     print(f"Perimeter: {shape.perimeter()}")
+
+
+def test_circle_negative():
+    circle_negative = Circle(-5)
+    assert abs(circle_negative.area() - 78.53981633974483) < 1e-5, \
+        "Area should handle negative radius"
+    assert abs(circle_negative.perimeter() + 31.41592653589793) < 1e-5, \
+        "Perimeter should handle negative radius"
