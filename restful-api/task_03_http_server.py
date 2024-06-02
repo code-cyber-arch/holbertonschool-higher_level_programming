@@ -41,6 +41,6 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 if __name__ == "__main__":
     PORT = 8000
     with http.server.HTTPServer(('localhost', PORT),
-                                http.server.HTTPRequestHandler) as server:
+                                SimpleHTTPRequestHandler) as server:
         print(f"Serving on port {PORT}")
         server.serve_forever()
