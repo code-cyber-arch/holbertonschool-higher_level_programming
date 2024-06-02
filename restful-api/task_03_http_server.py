@@ -28,12 +28,14 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-Type", "text/plain")
             self.end_headers()
-            self.wfile.write("OK".encode())
+            info = json.dumps({"version": "1.0", "description":
+                               "A simple API built with http.server"})
+            self.wfile.write(info.encode())
         else:
             self.send_response(404)
             self.send_header('Content-type', 'text/plain')
             self.end_headers()
-            self.wfile.write("404 not found".encode())
+            self.wfile.write("404 Not found".encode())
 
 
 if __name__ == "__main__":
