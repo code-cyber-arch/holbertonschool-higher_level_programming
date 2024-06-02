@@ -25,11 +25,14 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(b"OK")
         else:
-            self.send_error(404, "Endpoint not found")
+            self.send_response(404)
+            self.send_header('Content-type', 'text/plain')
+            self.end_headers()
+            self.wfile.write(b"Endpoint not found")
 
 
-def run(server_class=http.server.HTTPServer,
-        handler_class=SimpleHTTPRequestHandler):
+def run_server(server_class=http.server.HTTPServer,
+               handler_class=SimpleHTTPRequestHandler):
     server_address = ('', 8000)
     httpd = server_class(server_address, handler_class)
     print("Server started on port 8000...")
@@ -37,4 +40,4 @@ def run(server_class=http.server.HTTPServer,
 
 
 if __name__ == "__main__":
-    run()
+    run_server()
