@@ -33,10 +33,9 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
             self.wfile.write(info.encode())
         else:
             self.send_response(404)
-            self.send_header('Content-type', 'text/plain')
+            self.send_header("Content-type", "text/plain")
             self.end_headers()
-            self.wfile.write("404 Not found".encode())
-
+            self.wfile.write("404 Not Found".encode())
 
 if __name__ == "__main__":
     PORT = 8000
