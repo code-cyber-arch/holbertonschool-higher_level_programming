@@ -1,90 +1,91 @@
 #!/usr/bin/python3
-"""Flask"""
+''' module documentation '''
 from flask import Flask, jsonify, request
 from flask_httpauth import HTTPBasicAuth
-from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import (
-    JWTManager,
     create_access_token,
-    jwt_required,
     get_jwt_identity,
-    get_jwt
+    jwt_required,
+    JWTManager
 )
-from functools import wraps
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 app = Flask(__name__)
+app.config["JWT_SECRET_KEY"] = "it's_a_secret_to_everybody"
 auth = HTTPBasicAuth()
-app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'
 jwt = JWTManager(app)
 
 
-"""In-memory user storage"""
 users = {
     "user1": {
         "username": "user1",
-        "password": generate_password_hash("password1"),
-        "role": "user"},
+        "password": generate_password_hash("password"),
+        "role": "user"
+    },
     "admin1": {
         "username": "admin1",
-        "password": generate_password_hash("password2"),
-        "role": "admin"}
+        "password": generate_password_hash("password"),
+        "role": "admin"
+    }
 }
 
 
-"""User data retrieval function"""
+@app.route("/")
+def home():
+    return "Welcome to the Flask API!"
+
+
+@app.route("/login", methods=["POST"])
+def login():
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"error": "not a JSON"}), 400
+
+    for key in ["username", "password"]:
+        if key not in data:
+            return jsonify({"error": f"Missing attribute {key}."}), 400
+
+    username = data["username"]
+    password = data["password"]
+
+    if (username not in users or
+            not check_password_hash(users[username]["password"], password)):
+        return jsonify({"msg": "Bad username or password"}), 401
+
+    access_token = create_access_token(identity=username)
+    return jsonify({"access_token": access_token})
 
 
 @auth.verify_password
 def verify_password(username, password):
-    if username in users and check_password_hash(users[username]["password"],
-                                                 password):
-        return username
+    user = users.get(username)
+    if user and check_password_hash(user['password'], password):
+        return user
 
 
 @app.route('/basic-protected')
 @auth.login_required
 def basic_protected():
-    return jsonify({"message": "Basic Auth: Access Granted"})
-
-
-@app.route('/login', methods=['POST'])
-def login():
-    data = request.get_json()
-    username = data.get("username")
-    password = data.get("password")
-    if username in users and check_password_hash(users[username]["password"],
-                                                 password):
-        a_token = create_access_token(
-            identity={"username": username, "role": users[username]["role"]})
-        return jsonify({"access_token": a_token})
-    return jsonify({"error": "Invalid credentials"}), 401
+    return "Basic Auth: Access Granted"
 
 
 @app.route('/jwt-protected')
 @jwt_required()
 def jwt_protected():
-    return jsonify({"message": "JWT Auth: Access Granted"})
+    return "JWT Auth: Access Granted"
 
 
-def role_required(role):
-    def decorator(f):
-        @wraps(f)
-        @jwt_required()
-        def decorated_function(*args, **kwargs):
-            claims = get_jwt()
-            if claims['role'] != role:
-                return jsonify({"message": "Forbidden"}), 403
-            return f(*args, **kwargs)
-        return decorated_function
-    return decorator
-
-
-@app.route('/admin-only')
-@role_required('admin')
+@app.route("/admin-only")
+@jwt_required()
 def admin_only():
-    return jsonify({"message": "Admin Access: Granted"})
+    current_user = get_jwt_identity()
+
+    if current_user not in users or users[current_user]["role"] != "admin":
+        return jsonify({"error": "Admin access required"}), 403
+
+    return "Admin Access: Granted"
 
 
 @jwt.unauthorized_loader
