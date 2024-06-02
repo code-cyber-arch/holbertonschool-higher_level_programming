@@ -24,6 +24,11 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
             self.send_header('Content-type', 'text/plain')
             self.end_headers()
             self.wfile.write(b"OK")
+        elif self.path == "/info":
+            self.send_response(200)
+            self.send_header("Content-Type", "text/plain")
+            self.end_headers()
+            self.wfile.write("OK".encode())
         else:
             self.send_response(404)
             self.send_header('Content-type', 'text/plain')
