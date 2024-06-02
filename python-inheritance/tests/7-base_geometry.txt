@@ -1,82 +1,72 @@
-The ``base_geometry`` module
-======================
-
-Importing ``base_geometry``
--------------------
-
-    >>> BG = __import__('7-base_geometry').BaseGeometry()
-
-Testing ``area``
--------------------
-
-normal usage
-    >>> BG.area()
-    Traceback (most recent call last):
-        ...
-    Exception: area() is not implemented
-
-Testing ``integer_validator``
--------------------
-
-value is a positive integer
-    >>> BG.integer_validator("value", 1)
-
-value is zero
-    >>> BG.integer_validator("value", 0)
-    Traceback (most recent call last):
-        ...
-    ValueError: value must be greater than 0
-
-value is a negative integer
-    >>> BG.integer_validator("value", -1)
-    Traceback (most recent call last):
-        ...
-    ValueError: value must be greater than 0
-
-value is a string
-    >>> BG.integer_validator("value", "1")
-    Traceback (most recent call last):
-        ...
-    TypeError: value must be an integer
-
-value is a tuple
-    >>> BG.integer_validator("value", (1, 2))
-    Traceback (most recent call last):
-        ...
-    TypeError: value must be an integer
-
-value is a list
-    >>> BG.integer_validator("value", [1, 2])
-    Traceback (most recent call last):
-        ...
-    TypeError: value must be an integer
-
-value is a bool
-    >>> BG.integer_validator("value", True)
-    Traceback (most recent call last):
-        ...
-    TypeError: value must be an integer
-
-value is a dict
-    >>> BG.integer_validator("value", {1, 2})
-    Traceback (most recent call last):
-        ...
-    TypeError: value must be an integer
-
-value is None
-    >>> BG.integer_validator("value", None)
-    Traceback (most recent call last):
-        ...
-    TypeError: value must be an integer
-
-missing one argument
-    >>> BG.integer_validator("value")
-    Traceback (most recent call last):
-        ...
-    TypeError: integer_validator() missing 1 required positional argument: 'value'
-
-missing two arguments
-    >>> BG.integer_validator()
-    Traceback (most recent call last):
-        ...
-    TypeError: integer_validator() missing 2 required positional arguments: 'name' and 'value'
+>>> BG = __import__('7-base_geometry').BaseGeometry()
+>>> 
+>>> BG.area()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/root/holbertonschool-higher_level_programming/python-inheritance/7-base_geometry.py", line 9, in area
+    raise Exception("area() is not implemented")
+Exception: area() is not implemented
+>>> 
+>>> BG.integer_validator("value", 1)
+>>> 
+>>> BG.integer_validator("value", 0)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/root/holbertonschool-higher_level_programming/python-inheritance/7-base_geometry.py", line 15, in integer_validator
+    raise ValueError(f'{name} must be greater than 0')
+ValueError: value must be greater than 0
+>>> 
+>>> BG.integer_validator("value", -1)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/root/holbertonschool-higher_level_programming/python-inheritance/7-base_geometry.py", line 15, in integer_validator
+    raise ValueError(f'{name} must be greater than 0')
+ValueError: value must be greater than 0
+>>> 
+>>> BG.integer_validator("value", "1")
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/root/holbertonschool-higher_level_programming/python-inheritance/7-base_geometry.py", line 13, in integer_validator
+    raise TypeError(f'{name} must be an integer')
+TypeError: value must be an integer
+>>> 
+>>> BG.integer_validator("value", (1, 2))
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/root/holbertonschool-higher_level_programming/python-inheritance/7-base_geometry.py", line 13, in integer_validator
+    raise TypeError(f'{name} must be an integer')
+TypeError: value must be an integer
+>>> 
+>>> BG.integer_validator("value", [1, 2])
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/root/holbertonschool-higher_level_programming/python-inheritance/7-base_geometry.py", line 13, in integer_validator
+    raise TypeError(f'{name} must be an integer')
+TypeError: value must be an integer
+>>> 
+>>> BG.integer_validator("value", True)
+>>> 
+>>> BG.integer_validator("value", {1, 2})
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/root/holbertonschool-higher_level_programming/python-inheritance/7-base_geometry.py", line 13, in integer_validator
+    raise TypeError(f'{name} must be an integer')
+TypeError: value must be an integer
+>>> 
+>>> BG.integer_validator("value", None)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/root/holbertonschool-higher_level_programming/python-inheritance/7-base_geometry.py", line 13, in integer_validator
+    raise TypeError(f'{name} must be an integer')
+TypeError: value must be an integer
+>>> 
+>>> BG.integer_validator("value")
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: integer_validator() missing 1 required positional argument: 'value'
+>>> 
+>>> BG.integer_validator()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: integer_validator() missing 2 required positional arguments: 'name' and 'value'
+>>> 
