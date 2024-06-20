@@ -1,6 +1,10 @@
 #!/usr/bin/python3
 """
-Contains State class and Base, an instance of declarative_base()
+Module for State class and Base instance.
+
+Defines:
+    - Base: SQLAlchemy declarative base
+    - State: ORM class for 'states' table
 """
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
@@ -10,7 +14,12 @@ Base = declarative_base()
 
 class State(Base):
     """
-    Class with id and name attributes of each state
+    Represents a state with id and name attributes.
+
+    Attributes:
+        __tablename__ (str): The table name
+        id (Column): The state's id, primary key
+        name (Column): The state's name
     """
     __tablename__ = 'states'
     id = Column(Integer(11),
