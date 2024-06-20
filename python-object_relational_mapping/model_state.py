@@ -22,7 +22,7 @@ class State(Base):
         name (Column): The state's name
     """
     __tablename__ = 'states'
-    id = Column(Integer(11),
+    id = Column(Integer,
                 unique=True,
                 autoincrement=True,
                 nullable=False,
