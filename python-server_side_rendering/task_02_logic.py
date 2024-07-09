@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Render HTML pages"""
-from flask import Flask, render_template
 import json
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
