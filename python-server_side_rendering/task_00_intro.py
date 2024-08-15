@@ -1,53 +1,48 @@
 #!/usr/bin/python3
-""" function to replace words in templates """
+""" function that performs word replacement in templates """
 
 import logging
-import os
+import sys
 
+def generate_invitations(template_content, attendees):
+    """ replaces the curly brace vars in 'template_content' with approriate values from 'attendees' """
 
-def generate_invitations(template, attendees):
-    """ function to replace templates with a list of dicts"""
-    # Input checking - types
-    if not isinstance(template, str):
-        logging.error("Tamplate should be a string")
-        raise ValueError("Not a string")
+    if not isinstance(template_content, str) or not isinstance(attendees, list):
+        sys.exit()
 
-    if not isinstance(attendees, list) or not all(isinstance(attendee, dict) for attendee in attendees):
-        logging.error("Attendees should be a list of dictionaries")
-        raise ValueError("Not a list")
+    # remove whitespace from either end of template_content
+    template_content = template_content.strip()
 
-    # check empty inputs
-    if not template:
-        logging.error("Tamplate is empty, no output files generated.")
-        raise IndexError("Tamplate is empty, no output files generated.")
+    if len(template_content) == 0:
+        logging.warning("template_content is empty")
+        sys.exit()
 
-    if not attendees:
-        logging.error("No data provided, no output files generated.")
-        raise IndexError("No data provided, no output files generated.")
+    if len(attendees) == 0:
+        logging.warning("attendees is empty")
+        sys.exit()
 
+    count = 1
+    for row in attendees:
+        template_copy = template_content
 
-    # Start index from 1
-    for index, attendee in enumerate(attendees, start=1):
-        output_content = template
-        for key, value in attendee.items():
-            if value is None:
-                attendee[key] = "N/A"
-            output_content = output_content.replace(f"{{{key}}}", attendee[key])
+        for key in ["name", "event_title", "event_date", "event_location"]:
+            value = ""
+            to_replace = "{" + key + "}"
 
-        # Output file
-        # name = attendee.get("name", f"attendee_{index}").replace(" ", "_")
-        output_filename = f"output_{index}.txt"
+            # Not just the value! if the key is missing, we should also add 'N/A'!
+            if key not in row:
+                value = "N/A"
+            else:
+                value = row[key]
 
-        # check if file already exists
-        if os.path.exists(output_filename):
-            logging.warning("File %s already exists, skipping.", output_filename)
-            continue
+            if value == "" or value is None:
+                value = "N/A"
 
-        try:
-            with open(output_filename, "w", encoding="utf-8") as output_file:
-                output_file.write(output_content)
-            logging.info("Generated file: %s", output_filename)
-        except Exception as e:
-            logging.exception("Failed to write to file %s: %s", output_filename, e)
+            template_copy = template_copy.replace(to_replace, value)
 
-    logging.info("Invitation files generated successfully.")
+        # write it into a file
+        f = open("output_" + str(count) + ".txt", "a")
+        f.write(template_copy)
+        f.close()
+
+        count = count + 1
